@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -63,11 +62,18 @@ class AvatarWidget extends StatelessWidget {
     );
   }
 
+
   Widget _buildAvatarContent() {
     if (imageUrl != null && imageUrl!.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(100),
-        child: Image.network(
+        child: imageUrl!.startsWith('assets/')
+            ? Image.asset(
+          imageUrl!,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _buildFallback(),
+        )
+            : Image.network(
           imageUrl!,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => _buildFallback(),
@@ -98,10 +104,12 @@ class AvatarWidget extends StatelessWidget {
   }
 
   String _getInitials(String name) {
-    List<String> nameParts = name.split(' ');
+    List<String> nameParts = name.trim().split(' ').where((part) => part.isNotEmpty).toList();
+
     if (nameParts.length >= 2) {
       return '${nameParts[0][0]}${nameParts[1][0]}'.toUpperCase();
     } else if (nameParts.isNotEmpty) {
+      // 3. إذا كان اسماً واحداً فقط
       return nameParts[0][0].toUpperCase();
     }
     return 'U';
