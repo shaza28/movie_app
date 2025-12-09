@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_app/core/resourses/app_images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/resourses/app_colors.dart';
+import '../../../core/resourses/app_images.dart';
+import '../../../core/routers.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const routeName = "/onboarding";
@@ -13,35 +16,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, dynamic>> _pages = [
+  final List<Map<String, String>> _pages = [
     {
       'image': AppImages.screenOne,
       'title': "Find Your Next\nFavorite Movie Here",
-      'description': "Get access to a huge library of movies to suit all tastes. You will surely like it.",
+      'description': "Get access to a huge library of movies to suit all tastes.",
       'button': "Explore Now",
     },
     {
       'image': AppImages.screenTwo,
       'title': "Discover Movies",
-      'description': "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.",
+      'description': "Explore a vast collection of movies in all qualities and genres.",
       'button': "Next",
     },
     {
       'image': AppImages.screenThree,
       'title': "Explore All Genres",
-      'description': "Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.",
+      'description': "Discover movies from every genre, in all available qualities.",
       'button': "Next",
     },
     {
       'image': AppImages.screenFour,
       'title': "Create Watchlists",
-      'description': "Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.",
+      'description': "Save movies to your watchlist to keep track of what you want to watch next.",
       'button': "Next",
     },
     {
       'image': AppImages.screenFive,
       'title': "Rate, Review, and Learn",
-      'description': "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews.",
+      'description': "Share your thoughts on the movies you've watched.",
       'button': "Next",
     },
     {
@@ -58,7 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // خلفية الصفحة - الصورة الكبيرة
+
           PageView.builder(
             controller: _pageController,
             itemCount: _pages.length,
@@ -67,13 +70,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _currentPage = page;
               });
             },
-            itemBuilder: (context, index) {
+            itemBuilder: (_, index) {
               return Container(
-                width: double.infinity,
-                height: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(_pages[index]['image']),
+                    image: AssetImage(_pages[index]['image']!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -81,119 +82,119 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Bottom Sheet من تحت
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              height: 320.h,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.9),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.r),
-                  topRight: Radius.circular(30.r),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    blurRadius: 20,
-                    spreadRadius: 5,
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+              color: Colors.black.withOpacity(0.8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  Text(
+                    _pages[_currentPage]['title']!,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 30.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // العنوان والوصف
-                    Column(
-                      children: [
-                        Text(
-                          _pages[_currentPage]['title'],
-                          style: TextStyle(
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 1.3,
-                          ),
-                          textAlign: TextAlign.center,
+                  SizedBox(height: 16.h),
+                  Text(
+                    _pages[_currentPage]['description']!,
+                    style: TextStyle(color: AppColors.white, fontSize: 18.sp),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20.h),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _pages.length,
+                          (index) => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4.w),
+                        width: 8.w,
+                        height: 8.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentPage == index ? AppColors.yellow : AppColors.gray,
                         ),
-                        SizedBox(height: 20.h),
-                        Text(
-                          _pages[_currentPage]['description'],
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.grey[400],
-                            height: 1.5,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                      ),
                     ),
+                  ),
+                  SizedBox(height: 20.h),
 
+                  Column(
+                    children: [
 
-                    Column(
-                      children: [
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(_pages.length, (index) {
-                            return Container(
-                              width: 8.w,
-                              height: 8.h,
-                              margin: EdgeInsets.symmetric(horizontal: 4.w),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _currentPage == index ? Colors.red : Colors.grey[600],
-                              ),
-                            );
-                          }),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50.h,
+                        child: ElevatedButton(
+                          onPressed: _nextPage,
+                          child: Text(
+                            _pages[_currentPage]['button']!,
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.yellow,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
                         ),
+                      ),
+                      SizedBox(height: 12.h),
 
-                        SizedBox(height: 30.h),
-
-                        // الزر
+                      if (_currentPage > 0)
                         SizedBox(
                           width: double.infinity,
                           height: 50.h,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_currentPage == _pages.length - 1) {
-                                Navigator.pushReplacementNamed(context, '/login');
-                              } else {
-                                _pageController.nextPage(
+                              _pageController.previousPage(
                                   duration: Duration(milliseconds: 300),
-                                  curve: Curves.ease,
-                                );
-                              }
+                                  curve: Curves.easeInOut);
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
                             child: Text(
-                              _pages[_currentPage]['button'],
+                              "Back",
                               style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.yellow),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              side: BorderSide(color: AppColors.yellow, width: 2),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
   }
+
+  void _nextPage() async {
+    if (_currentPage == _pages.length - 1) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('seenOnboarding', true);
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
+    } else {
+      _pageController.nextPage(
+          duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }  }
 }

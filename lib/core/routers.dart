@@ -3,5 +3,6 @@ class AppRoutes {
   static const String onBoarding = "/onboarding";
   static const String register = '/register';
   static const String login = '/login';
+  static const String homeScreen = '/homescreen';
   static const String forgetPassword = '/forget-password';
 }
