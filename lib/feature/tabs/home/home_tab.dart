@@ -14,20 +14,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> _allGenres = [
-    'Action',
-    'Adventure',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Romance',
-    'Sci-Fi',
-    'Thriller',
-    'Fantasy',
-    'Animation',
-    'Crime',
-    'Mystery',
+    'Action', 'Adventure', 'Comedy', 'Drama', 
+    'Horror', 'Romance', 'Sci-Fi', 'Thriller', 
+    'Fantasy', 'Animation', 'Crime', 'Mystery'
   ];
-
+  
   List<String> _selectedGenres = [];
   List<Movie> _featuredMovies = [];
   bool _isLoading = true;
@@ -41,13 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadData() async {
     try {
-      // جلب أحدث الأفلام للقسم الرئيسي
       final latestMovies = await MovieRepository().getLatestMovies();
-      // جلب صورة مميزة عشوائية
       _featuredImage = await MovieRepository().getFeaturedMovieImage();
-      // تغيير الترتيب العشوائي للأقسام
       _shuffleGenres();
-
+      
       setState(() {
         _featuredMovies = latestMovies;
         _isLoading = false;
@@ -67,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // إزالة Scaffold وبدأ مباشرة بـ RefreshIndicator
+
     return RefreshIndicator(
       color: AppColors.yellow,
       backgroundColor: AppColors.black,
@@ -93,15 +81,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // Featured Movie Image
                   Image.network(
-                    _featuredImage.isNotEmpty
-                        ? _featuredImage
-                        : 'https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+                    _featuredImage.isNotEmpty 
+                      ? _featuredImage 
+                      : 'https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(color: AppColors.darkGray);
                     },
                   ),
-
+                  
                   // Gradient Overlay
                   Container(
                     decoration: BoxDecoration(
@@ -117,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
+                  
                   // Available Now Text in Center
                   const Positioned(
                     top: 150,
@@ -141,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
+                  
                   // Movie Rating Badge
                   Positioned(
                     top: 40,
@@ -176,8 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
-                  // Movie Title
+                  
                   const Positioned(
                     bottom: 150,
                     left: 0,
@@ -200,8 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
-                  // Watch Now Button
+                  
                   Positioned(
                     bottom: 80,
                     left: 0,
@@ -213,9 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MovieDetailScreen(
-                                  movieId: _featuredMovies.first.id,
-                                ),
+                                builder: (context) => 
+                                    MovieDetailScreen(movieId: _featuredMovies.first.id),
                               ),
                             );
                           }
@@ -247,7 +232,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // Latest Movies Horizontal Slider
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 30),
@@ -297,11 +281,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // Dynamic Genre Sections
           ..._buildGenreSections(),
 
-          // Footer Spacing
-          const SliverToBoxAdapter(child: SizedBox(height: 80)),
+          // Footer Spcing
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 80),
+          ),
         ],
       ),
     );
@@ -320,10 +305,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section Header (في التصميم لا يوجد عنوان لهذا القسم)
         const SizedBox(height: 10),
-
-        // Horizontal List
+        
         SizedBox(
           height: 240,
           child: ListView.builder(
@@ -393,8 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
-                // Rating Badge (Top Left)
+                
                 Positioned(
                   top: 12,
                   left: 12,
@@ -437,10 +419,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-
+            
             const SizedBox(height: 12),
-
-            // Movie Title
+            
             Text(
               movie.title,
               style: const TextStyle(
@@ -451,10 +432,9 @@ class _HomeScreenState extends State<HomeScreen> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-
+            
             const SizedBox(height: 4),
-
-            // Movie Year
+            
             Text(
               '${movie.year}',
               style: const TextStyle(color: AppColors.gray, fontSize: 14),
@@ -493,14 +473,12 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
 
-            if (snapshot.hasError ||
-                !snapshot.hasData ||
-                snapshot.data!.isEmpty) {
-              return Container(); // إخفاء الأقسام الفارغة
+            if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+              return Container(); 
             }
 
             final movies = snapshot.data!;
-
+            
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
@@ -534,10 +512,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-
+                  
                   const SizedBox(height: 16),
-
-                  // Movies Horizontal List
+                  
                   SizedBox(
                     height: 200,
                     child: ListView.builder(
@@ -551,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
+                                builder: (context) => 
                                     MovieDetailScreen(movieId: movie.id),
                               ),
                             );
@@ -581,25 +558,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                         movie.mediumCoverImage,
                                         fit: BoxFit.cover,
                                         width: double.infinity,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                              return Container(
-                                                color: AppColors.darkGray,
-                                                child: const Icon(
-                                                  Icons.movie,
-                                                  color: AppColors.gray,
-                                                  size: 40,
-                                                ),
-                                              );
-                                            },
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            color: AppColors.darkGray,
+                                            child: const Icon(
+                                              Icons.movie,
+                                              color: AppColors.gray,
+                                              size: 40,
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
                                 ),
-
+                                
                                 const SizedBox(height: 8),
-
-                                // Movie Title
+                                
                                 Text(
                                   movie.title,
                                   style: const TextStyle(
@@ -610,8 +585,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-
-                                // Movie Rating
+                                
                                 Row(
                                   children: [
                                     const Icon(

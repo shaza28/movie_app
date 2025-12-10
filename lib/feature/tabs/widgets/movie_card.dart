@@ -57,7 +57,6 @@ class MovieCard extends StatelessWidget {
               ),
             ),
 
-            // Watch Now Button
             Positioned(
               bottom: 0,
               left: 0,
@@ -148,7 +147,6 @@ class CastCard extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       child: Column(
         children: [
-          // Cast Image
           Container(
             width: 100,
             height: 100,
@@ -165,7 +163,7 @@ class CastCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Cast Name
+          // Cast
           Text(
             castMember.name,
             style: const TextStyle(
@@ -177,7 +175,6 @@ class CastCard extends StatelessWidget {
             maxLines: 2,
           ),
 
-          // Character Name
           Text(
             castMember.characterName,
             style: const TextStyle(color: AppColors.gray, fontSize: 12),

@@ -5,13 +5,13 @@ import 'package:movie_app/core/routers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'config/theme/theme_manager.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MovieApp());
-
 }
-class MovieApp extends StatelessWidget{
+
+class MovieApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //var configProvider = Provider.of<ConfigProvider>(context);
@@ -26,7 +26,7 @@ class MovieApp extends StatelessWidget{
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RoutesManager.router,
-          initialRoute: AppRoutes.login,
+          initialRoute: AppRoutes.tabs,
           theme: ThemeManager.light,
           darkTheme: ThemeManager.dark,
           locale: Locale("en"),
